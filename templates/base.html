@@ -1,0 +1,91 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>
+    Material Dashboard by Creative Tim
+  </title>
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <!-- CSS Files -->
+  <link href="{% static 'css/material-dashboard.css' %}" rel="stylesheet" />
+  
+ 
+  
+  <script type="text/javascript" src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.tablesorter.min.js' %}"></script>
+  
+  
+</head>
+
+<body class="">
+  <div class="wrapper ">
+    <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
+      <!--
+        Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+
+        Tip 2: you can also add an image using data-image tag
+    -->
+      <div class="logo">
+        <a href="#" class="simple-text logo-normal">
+          CSIS
+        </a>
+        
+      </div>
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+          <li class="nav-item active ">
+            <a class="nav-link" href="{% url 'index' %}">
+              <i class="material-icons">content_paste</i>
+              <p>Class List</p>
+            </a>
+          </li>
+          <li class="nav-item active ">
+            <a class="nav-link" href="{% url 'rooms' %}">
+              <i class="material-icons">personal_video</i>
+              <p>Room List</p>
+            </a>
+          </li>
+          <li class="nav-item active ">
+            <a class="nav-link" href="{% url 'schedule' %}">
+              <i class="material-icons">personal_video</i>
+              <p>Scheduler</p>
+            </a>
+          </li>
+          <li class="nav-item active ">
+              <a class="nav-link" href="{% url 'finalSchedule' %}">
+                <i class="material-icons">personal_video</i>
+                <p>Semester Schedules</p>
+              </a>
+            </li>
+          
+              <li class="nav-item active position-absolute fixed-bottom text-center mb-3">
+                <a class="nav-link" href="{% url 'signin' %}">
+                  <p>Sign In</p>
+                </a>
+              </li>
+          
+        </ul>
+      </div>
+    </div>
+    {% block content %} {% endblock %}
+
+    </div>
+           
+     
+<script type="text/javascript">
+$(function(){
+  $('#keywords').tablesorter(); 
+});
+</script>      
+    
+</body>
+
+</html>

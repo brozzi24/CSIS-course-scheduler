@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="main-panel">
+        <div class="content">
+          <div class="container-fluid">
+            <!-- START FORM -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                    <div class="card-header card-header-primary">
+                        <h4 class="card-title ">Schedule by Classroom</h4>
+                        <p class="card-category">Look up available time slots for a classroom</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="search">
+                        <form action="{% url 'roomSearch' %}" method="GET">
+                                {% csrf_token %}
+                                <!-- Form Row 1 -->
+                                <div class="form-row">
+                                  <div class="col-md-6 mb-3">
+                                        <label class="sr-only">Course</label>
+                                        <select name="classes" class="form-control" required>
+                                            <option selected="False" disabled="disabled" value="course">Course</option>
+                                            {% for class in classes %}
+                                                <option name="{{ class.name }}" value="{{ class.name }}">{{ class.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    
+                                  </div>
+                                  <div class="col-md-6 mb-3">
+                                        <label class="sr-only">Room</label>
+                                        <select name="room" class="form-control" required>
+                                            <option selected="False" disabled="disabled" value="350">Room</option>
+                                            {% for room in rooms %}
+                                                {% if room.room_type == "LAB" %}
+                                                    <option name="{{ room.room_number }}" value="{{ room.room_number}}">{{ room.room_number}}LAB </option>
+                                                {% else %}
+                                                    <option name="{{ room.room_number }}" value="{{ room.room_number}}">{{ room.room_number}} </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                  </div>
+                                </div>
+                                <div class="form-row">
+                                        <div class="col-md-9 mb-3">
+                                                <div class="">
+                                                      <label class="btn btn-default active">
+                                                          <input type="checkbox" autocomplete="off" name="days[]" value="M">
+                                                          monday
+                                                      </label>
+                                                      <label class="btn btn-default active">
+                                                          <input type="checkbox" autocomplete="off" name="days[]" value="T">
+                                                          Tuesday
+                                                      </label>
+                                                      <label class="btn btn-default active">
+                                                          <input type="checkbox" autocomplete="off" name="days[]" value="W">
+                                                          Wednesday
+                                                      </label>
+                                                      <label class="btn btn-default active">
+                                                          <input type="checkbox" autocomplete="off" name="days[]" value="H">
+                                                          Thursday
+                                                          </label>
+                                                      <label class="btn btn-default active">
+                                                          <input type="checkbox" autocomplete="off" name="days[]" value="F">
+                                                          Friday
+                                                      </label>
+                                                      
+                                                </div>
+                                              
+                                            </div>
+                                </div>
+                            <button class="btn btn-secondary btn-block mt-4" type="submit">Submit form</button>
+                        </form>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+                <!-- END FORM -->
+                <!-- START FORM -->
+            <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title ">Schedule by Time</h4>
+                            <p class="card-category">Look up all availabe times for a classroom </p>
+                        </div>
+                        <div class="card-body">
+                            <div class="search">
+                            <form action="{% url 'timeSearch' %}" method="GET">
+                                {% csrf_token %}
+                                <!-- Form Row 1 -->
+                                <div class="form-row">
+                                    <div class="col-md-1 mb-3">
+                                    </div>
+                                    <div class="col-md-9 mb-3 ml-5">
+                                            <label class="btn btn-default active">
+                                                    <input type="checkbox" autocomplete="off" name="days[]" value="M">
+                                                    monday
+                                                </label>
+                                                <label class="btn btn-default active">
+                                                    <input type="checkbox" autocomplete="off" name="days[]" value="T">
+                                                    Tuesday
+                                                </label>
+                                                <label class="btn btn-default active">
+                                                    <input type="checkbox" autocomplete="off" name="days[]" value="W">
+                                                    Wednesday
+                                                </label>
+                                                <label class="btn btn-default active">
+                                                    <input type="checkbox" autocomplete="off" name="days[]" value="H">
+                                                    Thursday
+                                                    </label>
+                                                <label class="btn btn-default active">
+                                                    <input type="checkbox" autocomplete="off" name="days[]" value="F">
+                                                    Friday
+                                                </label>
+                                    </div>
+                                    <div class="col-md-1 mb-3">
+
+                                    </div>
+
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="">Start Time</label>
+                                        <select name="start_time" class="form-control" required>
+                                        
+                                        {% for t in time %}
+                                            <option value="{{ t }}">{{ t }} </option>
+                                        {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="">End Time</label>
+                                        <select name="end_time" class="form-control" required>
+                                        
+                                        {% for t in time %}
+                                            <option value="{{ t }}">{{ t }} </option>
+                                        {% endfor %}
+                                        </select>
+                                    </div>
+    
+                                    <div class="col-md-4 mb-3">
+                                        <label class="">Room Type</label>
+                                        <select name="room_type" class="form-control" required>
+                                        
+                                        <option value="lab">Lab</option>
+                                        <option value="lecture">Lecture</option>
+                                        <option value="both">both</option>
+
+                                        </select>
+                                    </div>
+    
+                                
+                                </div>
+                                
+                                <button class="btn btn-secondary btn-block mt-4" type="submit">Submit form</button>
+                            </form>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    <!-- END FORM -->
+{% endblock %}

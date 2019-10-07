@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="main-panel">
+    <div class="content">
+      <div class="container-fluid">
+      
+      
+      <!-- START FORM -->
+       <div class="row mt-5">
+          <div class="col-md-12 mt5">
+            <div class="card">
+              <div class="card-header card-header-primary">
+                <h4 class="card-title ">Log In</h4>
+                <p class="card-category">Log in to be able to view and change schedule</p>
+              </div>
+              <div class="card-body">
+                <form action="#" method="POST">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                       
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    
+                    <input type="submit" value="login" class="btn btn-primary btn-block">
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END FORM -->
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

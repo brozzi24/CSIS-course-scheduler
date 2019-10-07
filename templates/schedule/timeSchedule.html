@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="main-panel">
+        <div class="content">
+          <div class="container-fluid">
+          <!-- START FORM -->
+          <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                    <div class="card-header card-header-primary">
+                        <h4 class="card-title ">Schedule by time</h4>
+                        <p class="card-category">Look up available rooms at a given time slot </p>
+                    </div>
+                    <div class="card-body">
+                        <div class="search">
+                        <form action="{% url 'schedule' %}" method="POST">
+                                {% csrf_token %}
+                                <!-- Form Row 1 -->
+                                <div class="form-row">
+                                  <div class="col-md-6 mb-3">
+                                        <label class="sr-only">Course</label>
+                                        <select name="classes" class="form-control" required>
+                                            {% for class in classes %}
+                                                <option name="class_name" value="{{ class.name }}" selected >{{ class.name }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    
+                                  </div>
+                                  <div class="col-md-6 mb-3">
+                                        <label class="sr-only">Room</label>
+                                        <select name="room" class="form-control" required>
+                                            {% for room in rooms %}
+                                                {% if room.room_type == "LAB" %}
+                                                    <option name="room_number" value="{{ room.room_number }}">{{ room.room_number}}LAB </option>
+                                                {% else %}
+                                                    <option name="room_number" value="{{ room.room_number }}">{{ room.room_number}}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                  </div>
+                                </div>
+                                <!-- End Form Row 1 -->
+                                <!-- Start Form Row 2 -->
+                                <div class="form-row">
+                                    <div class="col-md-1 mb-3"></div>
+                                    <div class="col-md-2 mb-3 ">
+                                        <label class="btn btn-default btn-block active">
+                                            <input type="checkbox" autocomplete="off" name="days[]" value="M" 
+                                            {% if 'M' in days %}
+                                            checked
+                                            {% else %}
+                                            disabled
+                                            {% endif %}
+                                            >
+                                            monday
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2 mb-3  ">
+                                        <label class="btn btn-default btn-block active">
+                                            <input type="checkbox" autocomplete="off" name="days[]" value="T" 
+                                            {% if 'T' in days %}
+                                            checked
+                                            {% else %}
+                                            disabled
+                                            {% endif %}
+                                            >
+                                            tuesday
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2 mb-3  ">
+                                        <label class="btn btn-default btn-block active">
+                                            <input type="checkbox" autocomplete="off" name="days[]" value="W" 
+                                            {% if 'W' in days %}
+                                            checked
+                                            {% else %}
+                                            disabled
+                                            {% endif %}
+                                            >
+                                            wednesday
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2 mb-3  ">
+                                        <label class="btn btn-default btn-block active">
+                                            <input type="checkbox" autocomplete="off" name="days[]" value="H" 
+                                            {% if 'H' in days %}
+                                            checked
+                                            {% else %}
+                                            disabled
+                                            {% endif %}
+                                            >
+                                            Thursday
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2 mb-3  ">
+                                        <label class="btn btn-default btn-block active">
+                                            <input type="checkbox" autocomplete="off" name="days[]" value="F" 
+                                            {% if 'F' in days %}
+                                            checked
+                                            {% else %}
+                                            disabled
+                                            {% endif %}
+                                            >
+                                            Friday
+                                        </label>
+                                    </div>
+                                    <div class="col-md-1 mb-3"></div>
+                                </div>
+                                <!-- End Form Row 2 -->
+                                <!-- Start Form Row 3 -->
+                                <div class="form-row">
+                                    <div class="col-md-3 mb-3">
+                                        <select name="start_time" class="form-control" required> 
+                                            <option value="{{ start }}">{{ start }} </option>        
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <select name="end_time" class="form-control" required>
+                                            <option value="{{ end }}">{{ end }} </option>       
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-3 mt-1">
+                                        <input type="text" name="crn" placeholder="CRN" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-3 mb-3 mt-1">
+                                        <input type="text" name="offering" placeholder="Offering" class="form-control" required>
+                                    </div>
+                                </div>
+                                <!-- End Form Row 3 -->
+                                <!-- Start Form Row 4 -->
+                                <div class="form-row">
+                                    <div class="col-md-12 mb-3 d-inline text-center">
+                                        <h4>Optionals: <small>(Default value in paraenthesis) </small></h4>
+                                        
+                                    </div>
+                                </div>
+                                <!-- End Form Row 4 -->
+                                <!-- Start Form Row 5 -->
+                                <div class="form-row">
+                                    <div class="col-md-3 mb-3">
+                                        <input type="text" name="flex" placeholder="Term Flex(1)" class="form-control" >
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <input type="text" name="name" placeholder="Name(None)" class="form-control" >
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <input type="text" name="banner_id" placeholder="Banner ID(None)" class="form-control" >
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <input type="text" name="primary" placeholder="Primary(None)" class="form-control" >
+                                    </div>
+                                </div>
+                                <!-- End Form Row 5 -->
+                                <!-- Start Form Row 6 -->
+                                <div class="form-row">
+                                    <div class="col-md-3 mb-3">
+                                        <input type="text" name="building" placeholder="Building(8)" class="form-control" >
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <input type="text" name="campus" placeholder="Campus(M)" class="form-control" >
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <input type="text" name="delivery" placeholder="Dilivery(TR)" class="form-control" >
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <input type="text" name="notes" placeholder="Notes(None)" class="form-control" >
+                                    </div>
+                                </div>
+                                <!-- End Form Row 6 -->
+
+                                
+
+
+                            
+                            <button class="btn btn-secondary btn-block mt-4" type="submit">Submit form</button>
+                        </form>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+                <!-- END FORM -->
+            
+          </div>
+        </div>
+      </div>
+
+
+
+{% endblock %}

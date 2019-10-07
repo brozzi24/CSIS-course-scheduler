@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="main-panel">
+        <div class="content">
+          <div class="container-fluid">
+           
+            
+            
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header card-header-primary">
+                    <h4 class="card-title ">List Of Classes</h4>
+                    <p class="card-category">List of CSIS,CIS,INFO Classes</p>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive scrollable" style=" overflow-x: scroll;">
+                      <table id="keywords" class="table table-striped">
+                        <thead class=" text-primary">
+                          
+                          <th>Attribute</th>
+                          <th>Term Flex</th>
+                          <th>Subject</th>
+                          <th>CRN</th>
+                          <th>Course Number</th>
+                          <th>Offering</th>
+                          <th>Title</th>
+                          <th>Min Hours</th>
+                          <th>Max Hours</th>
+                          <th>Fixed Hours</th>
+                          <th>Name</th>
+                          <th>Banner ID</th>
+                          <th>Primary</th>
+                          <th>M</th>
+                          <th>T</th>
+                          <th>W</th>
+                          <th>R</th>
+                          <th>F</th>
+                          <th>S</th>
+                          <th>U</th>
+                          <th>Begin</th>
+                          <th>End</th>
+                          <th>Building</th>
+                          <th>Room</th>
+                          <th>Open Court</th>
+                          <th>Special Approval</th>
+                          <th>Campus</th>
+                          <th>Delivery Mode</th>
+                          <th>Notes</th>
+                          
+                          
+                          
+                        </thead>
+                        <tbody>
+                          {% for i in schedule %}
+                          <tr>
+                            <td>{{i.course.grad_type}}</td>
+                            <td>{{i.flex}}</td>
+                            <td>{{i.course.subject}}</td>
+                            <td>{{i.crn}}</td>
+                            <td>{{i.course.course_number}}</td>
+                            <td>{{i.offering}}</td>
+                            <td>{{i.course.name}}</td>
+                            <td>{{i.course.min_hours}}.00</td>
+                            <td>{{i.course.max_hours}}.00</td>
+                            <td>{{i.course.fixed_hours}}.00</td>
+                            <td>{{i.name}}</td>
+                            <td>{{i.banner_id}}</td>
+                            <td>{{i.primary}}</td>
+                            <td>{{i.monday}}</td>
+                            <td>{{i.tuesday}}</td>
+                            <td>{{i.wednesday}}</td>
+                            <td>{{i.thursday}}</td>
+                            <td>{{i.friday}}</td>
+                            <td></td>
+                            <td></td>
+                            <td>{{i.start_time}}</td>
+                            <td>{{i.end_time}}</td>
+                            <td>{{i.building}}</td>
+                            <td>{{i.room.room_number}}</td>
+                            <td>{{i.room.capcity}}</td>
+                            <td>{{i.course.special}}</td>
+                            <td>{{i.campus}}</td>
+                            <td>{{i.delivery}}</td>
+                            <td>{{i.notes}}</td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock %}

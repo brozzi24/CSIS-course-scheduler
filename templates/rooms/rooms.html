@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="main-panel">
+    <div class="content">
+      <div class="container-fluid">
+        <!-- START FORM -->
+       <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header card-header-primary">
+                <h4 class="card-title ">Add A Classroom</h4>
+                <p class="card-category">Adds classrooms into the database</p>
+              </div>
+              <div class="card-body">
+                <div class="search">
+                  <form action="{% url 'rooms' %}" method="Post">
+                    {% csrf_token %}
+                    <!-- Form Row 1 -->
+                    <div class="form-row">
+                      <div class="col-md-4 mb-3">
+                        {{ form.room_number | as_crispy_field}}
+                      </div>
+
+                      <div class="col-md-4 mb-3">
+                          {{ form.room_type | as_crispy_field }}
+                        </select>
+                      </div>
+
+                      <div class="col-md-4 mb-3">
+                        {{ form.capcity | as_crispy_field }}
+                      </div>
+                    </div>
+                    
+                    <button class="btn btn-secondary btn-block mt-4" type="submit">Submit form</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END FORM -->
+        
+        
+        <!-- START TABLE -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header card-header-primary">
+                <h4 class="card-title ">List Of Classes</h4>
+                <p class="card-category">List of CSIS,CIS,INFO Classes</p>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive scrollable">
+                  <table id="keywords" class="table">
+                    <thead class=" text-primary">
+                      <th id="room_id">Room ID</th>
+                      <th id="room_number">RoomNumber</th>
+                      <th id="room_type">Room Type</th>
+                      <th id="capacity">Capactiy</th>
+                      
+                    </thead>
+                    <tbody>
+                      <p>{{ name }}</p>
+                      {% if rooms %}
+                        {% for room in rooms %}
+                          <tr>
+                            <td>{{ room.id }}</td>
+                            <td>{{ room.room_number }}</td>
+                            <td>{{ room.room_type }}</td>
+                            <td>{{ room.capcity }}</td>
+                          </tr>
+                        {% endfor %}
+                      {% else %}
+                          <p>No Classes In Database</p>
+                      {% endif %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END TABLE -->
+        
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock %}

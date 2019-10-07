@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="main-panel">
+    <div class="content">
+      <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title ">Add A Class</h4>
+                  <p class="card-category">Adds class into the database</p>
+                </div>
+                <div class="card-body">
+                  <div class="search">
+                    <form action="{% url 'index' %}" method="POST">
+                      {% csrf_token %}
+                      <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                          {{form.name | as_crispy_field }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          {{form.course_number | as_crispy_field }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          {{form.subject | as_crispy_field }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            {{form.grad_type | as_crispy_field }}
+                        </div>
+                      </div>
+                      <div class="form-row">
+                          <div class="col-md-3 mb-3">
+                            {{form.min_hours | as_crispy_field }}
+                          </div>
+                          <div class="col-md-3 mb-3">
+                            {{form.max_hours | as_crispy_field }}
+                          </div>
+                          <div class="col-md-3 mb-3">
+                            {{form.fixed_hours | as_crispy_field }}
+                          </div>
+                          <div class="col-md-3 mb-3">
+                            {{form.special | as_crispy_field }}
+                          </div>
+                        </div>
+                       
+                      <button class="btn btn-secondary btn-block mt-4" type="submit">Submit form</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+      
+        
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header card-header-primary">
+                <h4 class="card-title ">List Of Classes</h4>
+                <p class="card-category">List of CSIS,CIS,INFO Classes</p>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive scrollable">
+                  <table id="keywords" class="table">
+                    <thead class=" text-primary">
+                      <th>ID</th>
+                      <th id="courseNumber">Course #</th>
+                      <th>Name</th>
+                      <th id="subject">Subject</th>
+                      <th>Min Hours</th>
+                      <th>Max Hours</th>
+                      <th>Fixed Hours</th>
+                      <th>Grad Type</th>
+                    </thead>
+                    <tbody>
+                      {% if classes %}
+                        {% for class in classes %}
+                        <tr>
+                            <td>{{ class.id}}</td>
+                            <td>{{ class.course_number }}</td>
+                            <td>{{ class.name }}</td>
+                            <td>{{ class.subject}}</td>
+                            <td>{{ class.min_hours }}</td>
+                            <td>{{ class.max_hours }}</td>
+                            <td>{{ class.fixed_hours }}</td>
+                            <td>{{ class.grad_type }}</td>
+                          </tr>
+                          {% endfor %}
+                      {% else %}
+                        <p>No Classes In Database </p>
+                      {% endif %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
