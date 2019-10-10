@@ -106,17 +106,15 @@ def index(request):
 
 
 def roomSearch(request):
+    # Database objects needed
     rooms = Rooms.objects.all()
     classes = Classes.objects.all()
-
+    # Form data need
     room_id = request.GET.get('room')
     days = request.GET.getlist('days[]')
-    
     roomID = int(room_id)
-    print(roomID)
-
-   
-    #Time
+    
+    # Times
     time = [
         800,810,815,825,830,845,850,    
         900,910,915,925,930,945,950,
@@ -134,51 +132,46 @@ def roomSearch(request):
         2100,2110,2115,2125,2130,2145,2150
     ]
 
-    time2 = []
+    # Get good and bad times
+    goodTime = []
     badTime = []
-
-    
-    test = Scheduled.objects.filter(room__room_number=room_id)
-    test1 = []
-    
+    selectedRoom = Scheduled.objects.filter(room__room_number=room_id)
+    selectedDays = []
+    # Get selected days that are scheduled
     for day in days:
         if day == 'M':
-            test1 += test.filter(monday__iexact='M')
+            selectedDays += selectedRoom.filter(monday__iexact='M')
         if day == 'T':
-            test1 += test.filter(tuesday__iexact='T')
+            selectedDays += selectedRoom.filter(tuesday__iexact='T')
         if day == 'W':
-            test1 += test.filter(wednesday__iexact='W')
+            selectedDays += selectedRoom.filter(wednesday__iexact='W')
         if day == 'H':
-            test1 += test.filter(thursday__iexact='H')
+            selectedDays += selectedRoom.filter(thursday__iexact='H')
         if day == 'F':
-            test1 += test.filter(friday__iexact='F')
+            selectedDays += selectedRoom.filter(friday__iexact='F')
     
 
-            
-    print(test1)
-    for i in test1:
+    # Check if a givin time is available for a class        
+    for i in selectedDays:
         for j in time:
             if j >= i.start_time and j <= i.end_time:
                 if j in badTime:
                     continue
                 else:
                     badTime.append(j)
-
+    # Add good time to a list
     for i in time:
         if i in badTime:
             continue
         else:
-            time2.append(i)
-
-
-    
+            goodTime.append(i)
 
     context = {
         'rooms': rooms,
         'classes': classes,
         'values': request.GET,
         'roomID': roomID,
-        'time': time2,
+        'time': goodTime,
         'days': days
     }
     return render(request, 'schedule/roomSchedule.html',context)
@@ -197,31 +190,55 @@ def timeSearch(request):
     # Database objects needed
     rooms = Rooms.objects.all()
     classes = Classes.objects.all()
+    scheduled = Scheduled.objects.all()
     # GET vars needed
     days = request.GET.getlist('days[]')
-    start_time = request.GET.get('start_time')
-    end_time = request.GET.get('end_time')
+    start_time = int(request.GET.get('start_time'))
+    end_time = int(request.GET.get('end_time'))
+    room_type = request.GET.get('room_type')
 
 
-    # GOAL GET ALL CLASSROOMS WITH OPEN AVAILABLITY DURING SELECTED TIME
+    # get days of the week selected by user
+    selectedDays = []
+    # Get scheduled class on selected days
+    for day in days:
+        if day == 'M':
+            selectedDays += scheduled.filter(monday__iexact='M')
+        if day == 'T':
+            selectedDays += scheduled.filter(tuesday__iexact='T')
+        if day == 'W':
+            selectedDays += scheduled.filter(wednesday__iexact='W')
+        if day == 'H':
+            selectedDays += scheduled.filter(thursday__iexact='H')
+        if day == 'F':
+            selectedDays += scheduled.filter(friday__iexact='F')
 
-    # get days of the week
+    # Check to see if each classroom is open at a selected time 
+    badRooms = set()
+    goodRooms = []
+    for i in selectedDays:
+        print(i.room)
+        if i.end_time >= start_time and i.end_time <= end_time:
+            badRooms.add(i.room)
+        elif i.start_time >= start_time and i.end_time <= end_time:
+            badRooms.add(i.room)
+        elif i.start_time >= start_time and i.start_time <= end_time:
+            badRooms.add(i.room)
+        elif i.start_time <= start_time and i.end_time >= end_time:
+            badRooms.add(i.room)
+        
+    # add open rooms to goodRooms list
+    for room in rooms:
+        if room not in badRooms and room.room_type == room_type.upper():
+            goodRooms.append(room)
 
-    # of the days of the week check which class are from start to end
-   
-
-    
-    
-
-
-
-    
 
     context = {
         'rooms': rooms,
         'classes': classes,
         'days': days,
         'start': start_time,
-        'end': end_time
+        'end': end_time,
+        'goodRooms': goodRooms 
     }
     return render(request,'schedule/timeSchedule.html',context)

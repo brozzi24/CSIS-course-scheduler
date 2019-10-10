@@ -31,7 +31,7 @@
                                   <div class="col-md-6 mb-3">
                                         <label class="sr-only">Room</label>
                                         <select name="room" class="form-control" required>
-                                            {% for room in rooms %}
+                                            {% for room in goodRooms %}
                                                 {% if room.room_type == "LAB" %}
                                                     <option name="room_number" value="{{ room.room_number }}">{{ room.room_number}}LAB </option>
                                                 {% else %}
