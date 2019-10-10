@@ -137,21 +137,26 @@ def roomSearch(request):
     time2 = []
     badTime = []
 
-    # Get all scheduled classes (need to help sovle base case of a class not scheduled on that day)
-    monday = Scheduled.objects.filter(monday__iexact='M')
-    tuesday = Scheduled.objects.filter(tuesday__iexact='T')
-    wednesday = Scheduled.objects.filter(wednesday__iexact='W')
-    thursday = Scheduled.objects.filter(thursday__iexact='H')
-    friday = Scheduled.objects.filter(friday__iexact='F')
-
-    test = monday | tuesday | wednesday | thursday | friday
-    test = test.filter(room__room_number=room_id)
-
+    
+    test = Scheduled.objects.filter(room__room_number=room_id)
+    test1 = []
+    
+    for day in days:
+        if day == 'M':
+            test1 += test.filter(monday__iexact='M')
+        if day == 'T':
+            test1 += test.filter(tuesday__iexact='T')
+        if day == 'W':
+            test1 += test.filter(wednesday__iexact='W')
+        if day == 'H':
+            test1 += test.filter(thursday__iexact='H')
+        if day == 'F':
+            test1 += test.filter(friday__iexact='F')
     
 
             
-    print(test)
-    for i in test:
+    print(test1)
+    for i in test1:
         for j in time:
             if j >= i.start_time and j <= i.end_time:
                 if j in badTime:
@@ -203,8 +208,11 @@ def timeSearch(request):
     # get days of the week
 
     # of the days of the week check which class are from start to end
+   
+
     
     
+
 
 
     
