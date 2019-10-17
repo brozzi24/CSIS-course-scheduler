@@ -17,6 +17,7 @@ def index(request):
         form = roomForm()
         rooms = Rooms.objects.all()
         classes = Classes.objects.all()
+        
 
         #Time
         time = [
@@ -88,8 +89,26 @@ def index(request):
             
             
             # For scheduled database
-            start_time = request.POST['start_time']
-            end_time = request.POST['end_time']
+            start_time = int(request.POST['start_time'])
+            end_time = int(request.POST['end_time'])
+            schedule = Scheduled.objects.filter(room__room_number = room_id)
+            # check if time does not overlap with other scheduled classes
+            for i in schedule:
+                print(i.room)
+                if i.end_time >= start_time and i.end_time <= end_time:
+                    messages.error(request,'Class Named: ({}) is already scheduled from {} to {} that interferes with the class you are tring to schedule. '.format(i.course.name.upper(),i.start_time,i.end_time))
+                    return redirect('schedule')
+                elif i.start_time >= start_time and i.end_time <= end_time:
+                    messages.error(request,'Class Named: ({}) is already scheduled from {} to {} that interferes with the class you are tring to schedule. '.format(i.course.name.upper(),i.start_time,i.end_time))
+                    return redirect('schedule')
+                elif i.start_time >= start_time and i.start_time <= end_time:
+                    messages.error(request,'Class Named: ({}) is already scheduled from {} to {} that interferes with the class you are tring to schedule. '.format(i.course.name.upper(),i.start_time,i.end_time))
+                    return redirect('schedule')
+                elif i.start_time <= start_time and i.end_time >= end_time:
+                    messages.error(request,'Class Named: ({}) is already scheduled from {} to {} that interferes with the class you are tring to schedule. '.format(i.course.name.upper(),i.start_time,i.end_time))
+                    return redirect('schedule')
+
+
             if request.POST['flex']:
                 flex = request.POST['flex']
             else:
@@ -231,7 +250,7 @@ def finalSchedule(request):
 
 def timeSearch(request):
     # Database objects needed
-    rooms = Rooms.objects.all()
+    rooms = Rooms.objects.exclude(room_number=0)
     classes = Classes.objects.all()
     scheduled = Scheduled.objects.all()
     # GET vars needed
@@ -275,6 +294,10 @@ def timeSearch(request):
         if room not in badRooms and room.room_type == room_type.upper():
             goodRooms.append(room)
 
+    #Check if any rooms are available 
+    if len(goodRooms) == 0:
+        messages.error(request,'There no available rooms of type {} at the time of {} to {}'.format(room_type.upper(),start_time,end_time))
+        return redirect('/schedule/')
 
     context = {
         'rooms': rooms,

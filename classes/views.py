@@ -10,9 +10,20 @@ from .models import Classes
 def index(request):
     # Check if user is logged in
     if request.user.is_authenticated:
+        # Grab vars needed for context
+        form = forms.testClass()
+        classes = Classes.objects.all()
         # Check if POST method used
         if request.method == 'POST':
+            for course in classes:
+                if course.name == request.POST['name']:
+                    messages.error(request,'There is already a course matching that course name')
+                    return redirect('index')
+                if course.course_number == int(request.POST['course_number']):
+                    messages.error(request,'There is already a course number mathcing that course number')
+                    return redirect('index')
             #Get html form IDs
+            messages.success(request, 'Class has been added')
             course_number = request.POST['course_number']
             name = request.POST['name']
             subject = request.POST['subject']
@@ -29,9 +40,7 @@ def index(request):
             return redirect('index')
 
 
-        # Grab vars needed for context
-        form = forms.testClass()
-        classes = Classes.objects.all()
+        
         CONTEXT = {
             'form': form,
             'classes': classes

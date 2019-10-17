@@ -9,7 +9,14 @@ from scheduledClass.models import Scheduled
 # Create your views here.
 def index(request):
     if request.user.is_authenticated:
+        formRoom = forms.roomClass()
+        rooms = Rooms.objects.all()
         if request.method == 'POST':
+            for room in rooms:
+                # Validate room is not already in database
+                if room.room_number == int(request.POST['room_number']):
+                    messages.error(request, 'There is already a room mathcing that room number')
+                    return redirect('/rooms/')
             messages.success(request, 'Room has been added!')
             room_number = request.POST['room_number']
             room_type = request.POST['room_type']
@@ -21,8 +28,7 @@ def index(request):
 
             return redirect('/rooms/')
 
-        formRoom = forms.roomClass()
-        rooms = Rooms.objects.all()
+        
 
         time = [
             800,
