@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib import messages
 
 from . import forms
 from .models import Rooms
@@ -7,6 +8,7 @@ from scheduledClass.models import Scheduled
 # Create your views here.
 def index(request):
     if request.method == 'POST':
+        messages.success(request, 'Room has been added!')
         room_number = request.POST['room_number']
         room_type = request.POST['room_type']
         capcity = request.POST['capcity']
@@ -86,17 +88,6 @@ def index(request):
             goodRooms.append(i.room)
 
 
-
-
-
-
-
-    
-
-
-
-    
-    
     CONTEXT = {
         'rooms': rooms,
         'form': formRoom,

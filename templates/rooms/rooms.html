@@ -16,6 +16,7 @@
                 <p class="card-category">Adds classrooms into the database</p>
               </div>
               <div class="card-body">
+                {% include 'partials/_alerts.html'%}
                 <div class="search">
                   <form action="{% url 'rooms' %}" method="Post">
                     {% csrf_token %}
