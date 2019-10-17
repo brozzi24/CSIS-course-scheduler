@@ -165,4 +165,42 @@
                     </div>
                     </div>
                     <!-- END FORM -->
+                    <!-- START FORM -->
+            <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title ">Schedule a Web Course</h4>
+                            <p class="card-category">Schedule a web courese for the semester</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="search">
+                            <form action="{% url 'webSchedule' %}" method="GET">
+                                    {% csrf_token %}
+                                    <!-- Form Row 1 -->
+                                    <div class="form-row">
+                                      <div class="col-md-6 mb-3">
+                                            <label class="sr-only">Course</label>
+                                            <select name="classes" class="form-control" required>
+                                                {% for class in classes %}
+                                                    <option value="{{ class.name }}">{{ class.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                      </div>
+                                      <div class="col-md-6 mb-3">
+                                            <label class="sr-only">Room</label>
+                                            <select name="room" class="form-control" required>
+                                                <option selected="True" name="room" value="0">WEB</option>
+                                            </select>
+                                      </div>
+                                    </div>
+                                <button class="btn btn-secondary btn-block mt-4" type="submit">Submit form</button>
+                            </form>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    <!-- END FORM -->
+                    
 {% endblock %}

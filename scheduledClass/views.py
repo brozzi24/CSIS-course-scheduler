@@ -33,9 +33,43 @@ def index(request):
         2000,2010,2015,2025,2030,2045,2050,
         2100,2110,2115,2125,2130,2145,2150
     ]
+    if request.method == 'POST' and request.POST['room'] == '0':
+        #get course and room
+        for course in classes:
+            if course.name == request.POST['classes']:
+                getCourse = course
+        for room in rooms:
+            if room.room_number == int(request.POST['room']):
+                getRoom = room
 
-    # Schedule course
-    if request.method == 'POST':
+
+        # get capacity, crn, and offering
+        capacity = request.POST['capacity']
+        crn = request.POST['crn']
+        offering = request.POST['offering']
+
+        # non-options WEB course info 
+        building = 'WB'
+        campus = 'OFF'
+        delivery = 'WB'
+
+        # optional WEB course info
+        if request.POST['flex']:
+            flex = request.POST['flex']
+        else:
+            flex = 1
+        name = request.POST['name']
+        banner_id = request.POST['banner_id']
+        primary = request.POST['primary']
+        notes = request.POST['notes']
+
+        # create Scheduled object and save it
+        scheduled = Scheduled(course = getCourse, room=getRoom, start_time=0, end_time=0,flex=flex,crn=crn,monday='',tuesday = '', wednesday = '', thursday = '', friday='',offering=offering,banner_id=banner_id,primary=primary,building=building,campus=campus,delivery=delivery,notes=notes,capacity=capacity)
+        scheduled.save()
+        return HttpResponseRedirect('/schedule/')
+
+        # Schedule course
+    elif request.method == 'POST':
         # Get course and Room
         getCourse = request.POST['classes']
         setCourse = Classes.objects.filter(name__iexact=getCourse)
@@ -66,7 +100,7 @@ def index(request):
         if request.POST['building']:
             building = request.POST['building']
         else:
-            building = 8
+            building = '8'
         if request.POST['campus']:
             campus = request.POST['campus']
         else:
@@ -91,7 +125,7 @@ def index(request):
         notes = request.POST['notes']
         
         # Scheduled object
-        scheduled = Scheduled(course = setCourse[0], room=setRoom[0], start_time=start_time, end_time=end_time,flex=flex,crn=crn,monday=monday,tuesday = tuesday, wednesday = wednesday, thursday = thursday, friday=friday,offering=offering,banner_id=banner_id,primary=primary,building=building,campus=campus,delivery=delivery,notes=notes)
+        scheduled = Scheduled(course = setCourse[0], room=setRoom[0], start_time=start_time, end_time=end_time,flex=flex,crn=crn,monday=monday,tuesday = tuesday, wednesday = wednesday, thursday = thursday, friday=friday,offering=offering,banner_id=banner_id,primary=primary,building=building,campus=campus,delivery=delivery,notes=notes,capacity=0)
         scheduled.save()
 
         return HttpResponseRedirect('/schedule/')
@@ -242,3 +276,16 @@ def timeSearch(request):
         'goodRooms': goodRooms 
     }
     return render(request,'schedule/timeSchedule.html',context)
+
+
+def webSchedule(request):
+    # Get user form information
+    classes = Classes.objects.all()
+    
+    web = 'WEB'
+
+    context = {
+        'classes': classes,
+        'values': request.GET
+    }
+    return render(request,'schedule/webSchedule.html',context)

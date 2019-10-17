@@ -8,6 +8,7 @@ class Rooms(models.Model):
     CHOICES = (
         ('LAB','LAB'),
         ('LECTURE','LECTURE'),
+        ('WEB','WEB')
     )
     
     room_number = models.IntegerField(unique=True)
