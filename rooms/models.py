@@ -7,7 +7,8 @@ from django.db import models
 class Rooms(models.Model):
     CHOICES = (
         ('LAB','LAB'),
-        ('LECTURE','LECTURE')
+        ('LECTURE','LECTURE'),
+        ('WEB','WEB')
     )
     
     room_number = models.IntegerField(unique=True)
