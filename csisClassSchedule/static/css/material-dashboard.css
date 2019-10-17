@@ -20,8 +20,10 @@
     overflow: scroll;
 }
 
-/*     brand Colors              */
-
+/*     button colors             */
+btnColor {
+  background: #690717 !important;
+}
 .card {
   font-size: .875rem;
 }
@@ -9458,7 +9460,7 @@ a.text-dark:focus {
 .open>.btn.btn-default.dropdown-toggle,
 .show>.btn.btn-default.dropdown-toggle {
   color: #fff;
-  background-color: #919191;
+  background-color: #690717;
   border-color: #7a7a7a;
   box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12);
 }
@@ -9488,7 +9490,7 @@ a.text-dark:focus {
 .show>.btn.btn-default.dropdown-toggle:focus,
 .show>.btn.btn-default.dropdown-toggle.focus {
   color: #fff;
-  background-color: #919191;
+  background-color: #690717;
   border-color: #595959;
 }
 

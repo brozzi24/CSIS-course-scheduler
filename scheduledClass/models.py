@@ -4,9 +4,18 @@ from classes.models import Classes
 from rooms.models import Rooms
 
 # Create your models here.
+class Semester(models.Model):
+    semester = models.CharField(max_length=20, unique=True)
+    default = models.BooleanField(default=False)
+    def __str__(self):
+        return self.semester
+        
+
+
 class Scheduled(models.Model):
     course = models.ForeignKey(Classes, on_delete=models.CASCADE)
     room = models.ForeignKey(Rooms, on_delete=models.CASCADE)
+    semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     start_time = models.IntegerField(blank=True)
     end_time = models.IntegerField(blank=True)
     flex = models.IntegerField(default=1)

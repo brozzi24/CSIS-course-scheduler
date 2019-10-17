@@ -7,7 +7,7 @@ from rooms.models import Rooms
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from .forms import roomForm
-from .models import Scheduled
+from .models import Scheduled, Semester
 from rooms.models import Rooms
 from classes.models import Classes
 
@@ -17,6 +17,9 @@ def index(request):
         form = roomForm()
         rooms = Rooms.objects.all()
         classes = Classes.objects.all()
+        semesters = Semester.objects.all()
+
+        
 
         #Time
         time = [
@@ -43,7 +46,13 @@ def index(request):
             for room in rooms:
                 if room.room_number == int(request.POST['room']):
                     getRoom = room
-
+            
+            semester = request.POST['semesterPost'] 
+            # get semester id 
+            for i in semesters:
+                
+                if i.semester == semester:
+                    semester_id = i.id
 
             # get capacity, crn, and offering
             capacity = request.POST['capacity']
@@ -66,15 +75,21 @@ def index(request):
             notes = request.POST['notes']
 
             # create Scheduled object and save it
-            scheduled = Scheduled(course = getCourse, room=getRoom, start_time=0, end_time=0,flex=flex,crn=crn,monday='',tuesday = '', wednesday = '', thursday = '', friday='',offering=offering,banner_id=banner_id,primary=primary,building=building,campus=campus,delivery=delivery,notes=notes,capacity=capacity)
+            scheduled = Scheduled(course = getCourse, room=getRoom, semester_id = semester_id,start_time=0, end_time=0,flex=flex,crn=crn,monday='',tuesday = '', wednesday = '', thursday = '', friday='',offering=offering,banner_id=banner_id,primary=primary,building=building,campus=campus,delivery=delivery,notes=notes,capacity=capacity)
             scheduled.save()
             return HttpResponseRedirect('/schedule/')
 
             # Schedule course
         elif request.method == 'POST':
-            # Get course and Room
+            # Get course and Room and semester 
             getCourse = request.POST['classes']
             setCourse = Classes.objects.filter(name__iexact=getCourse)
+            semester = request.POST['semesterPost'] 
+            # get semester id 
+            for i in semesters:
+                
+                if i.semester == semester:
+                    semester_id = i.id
             # Turn room id to int
             getRoom = request.POST['room']
             room_id = int(getRoom)
@@ -127,7 +142,7 @@ def index(request):
             notes = request.POST['notes']
             
             # Scheduled object
-            scheduled = Scheduled(course = setCourse[0], room=setRoom[0], start_time=start_time, end_time=end_time,flex=flex,crn=crn,monday=monday,tuesday = tuesday, wednesday = wednesday, thursday = thursday, friday=friday,offering=offering,banner_id=banner_id,primary=primary,building=building,campus=campus,delivery=delivery,notes=notes,capacity=0)
+            scheduled = Scheduled(course = setCourse[0], room=setRoom[0], semester_id = semester_id ,start_time=start_time, end_time=end_time,flex=flex,crn=crn,monday=monday,tuesday = tuesday, wednesday = wednesday, thursday = thursday, friday=friday,offering=offering,banner_id=banner_id,primary=primary,building=building,campus=campus,delivery=delivery,notes=notes,capacity=0)
             scheduled.save()
 
             return HttpResponseRedirect('/schedule/')
@@ -136,7 +151,8 @@ def index(request):
             'form': form,
             'rooms': rooms,
             'time': time,
-            'classes': classes
+            'classes': classes,
+            'semesters': semesters
         }
         return render(request,'schedule/schedule.html',context)
     else:
@@ -148,10 +164,12 @@ def roomSearch(request):
     # Database objects needed
     rooms = Rooms.objects.all()
     classes = Classes.objects.all()
+    semester = Semester.objects.all()
     # Form data need
     room_id = request.GET.get('room')
     days = request.GET.getlist('days[]')
     roomID = int(room_id)
+    
     
     # Times
     time = [
@@ -211,7 +229,8 @@ def roomSearch(request):
         'values': request.GET,
         'roomID': roomID,
         'time': goodTime,
-        'days': days
+        'days': days,
+        'semester': semester
     }
     return render(request, 'schedule/roomSchedule.html',context)
 
@@ -219,26 +238,57 @@ def finalSchedule(request):
     if request.user.is_authenticated:
         schedule = Scheduled.objects.all()
         rooms = Rooms.objects.all()
-
+        semesters = Semester.objects.all()
         context = {
-            'schedule': schedule
-        
+            'schedule': schedule,
+            'semesters': semesters
         }
         return render(request, 'schedule/finalSchedules.html',context)
     else:
         messages.error(request, 'You must be logged in to view this page')
         return redirect('signin')
 
+def defaultSemester(request):
+    semesters = Semester.objects.all()
+
+    if request.method == 'POST':
+        semester = request.POST['addSemester']
+        for i in semesters:
+            if i.semester == semester:
+                messages.error(request,'Semester already exsists')
+                return redirect('finalSchedule')
+        new_semester = Semester(semester=semester,default=False)
+        new_semester.save()
+        messages.success(request,'New Semester has been added')
+        return redirect('finalSchedule')
+
+    semester = request.GET.get('semester')
+    for i in semesters:
+        i.default = False
+        i.save()
+        if i.semester == semester:
+            i.default = True
+            i.save()
+            messages.success(request,'Default semester has been changed!')
+        
+    return redirect('finalSchedule')
+        
+
+
 def timeSearch(request):
     # Database objects needed
     rooms = Rooms.objects.all()
     classes = Classes.objects.all()
     scheduled = Scheduled.objects.all()
+    semester = Semester.objects.all()
     # GET vars needed
     days = request.GET.getlist('days[]')
     start_time = int(request.GET.get('start_time'))
     end_time = int(request.GET.get('end_time'))
     room_type = request.GET.get('room_type')
+    selected_semester = request.GET.get('semester')
+    
+    
 
 
     # get days of the week selected by user
@@ -282,7 +332,9 @@ def timeSearch(request):
         'days': days,
         'start': start_time,
         'end': end_time,
-        'goodRooms': goodRooms 
+        'goodRooms': goodRooms,
+        'semester': selected_semester,
+        'semesters': semester
     }
     return render(request,'schedule/timeSchedule.html',context)
 
@@ -295,6 +347,6 @@ def webSchedule(request):
 
     context = {
         'classes': classes,
-        'values': request.GET
+        'values': request.GET,
     }
     return render(request,'schedule/webSchedule.html',context)

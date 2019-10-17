@@ -19,8 +19,8 @@
                                 {% csrf_token %}
                                 <!-- Form Row 1 -->
                                 <div class="form-row">
-                                  <div class="col-md-6 mb-3">
-                                        <label class="sr-only">Course</label>
+                                  <div class="col-md-4 mb-3">
+                                        <label class="">Course Name</label>
                                         <select name="classes" class="form-control" required>
                                             {% for class in classes %}
                                                 {% if class.name == values.classes %}
@@ -30,8 +30,8 @@
                                         </select>
                                     
                                   </div>
-                                  <div class="col-md-6 mb-3">
-                                        <label class="sr-only">Room</label>
+                                  <div class="col-md-4 mb-3">
+                                        <label class="">Room Number</label>
                                         <select name="room" class="form-control" required>
                                             {% for room in rooms %}
                                                 {% if roomID == room.room_number %}
@@ -44,6 +44,17 @@
                                             {% endfor %}
                                         </select>
                                   </div>
+                                  <div class="col-md-4 mb-3">
+                                        <label class="">Semester</label>
+                                        <select name="semesterPost" class="form-control" required>
+                                            {% for i in semester %}
+                                                {% if i.semester == values.semester %}
+                                                    <option selected  value="{{ values.semester }}">{{ values.semester }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                  </div>
+                                  
                                 </div>
                                 <!-- End Form Row 1 -->
                                 <!-- Start Form Row 2 -->
@@ -115,6 +126,7 @@
                                 <!-- Start Form Row 3 -->
                                 <div class="form-row">
                                     <div class="col-md-3 mb-3">
+                                        <label> Start Time </label>
                                         <select name="start_time" class="form-control" required>
                                             <option selected="False" disabled="disabled" value="">Start Time</option> 
                                             {% for t in time %}
@@ -123,6 +135,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-3 mb-3">
+                                        <label> End Time </label>
                                         <select name="end_time" class="form-control" required>
                                             <option selected="False" disabled="disabled" value="">End Time</option>
                                             {% for t in time %}
@@ -131,9 +144,11 @@
                                         </select>
                                     </div>
                                     <div class="col-md-3 mb-3 mt-1">
+                                        <label> End Time </label>
                                         <input type="text" name="crn" placeholder="CRN" class="form-control" required>
                                     </div>
                                     <div class="col-md-3 mb-3 mt-1">
+                                        <label> Offering </label>
                                         <input type="text" name="offering" placeholder="Offering" class="form-control" required>
                                     </div>
                                 </div>
@@ -142,7 +157,6 @@
                                 <div class="form-row">
                                     <div class="col-md-12 mb-3 d-inline text-center">
                                         <h4>Optionals: <small>(Default value in paraenthesis) </small></h4>
-                                        
                                     </div>
                                 </div>
                                 <!-- End Form Row 4 -->

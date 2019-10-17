@@ -18,7 +18,7 @@
                                 {% csrf_token %}
                                 <!-- Form Row 1 -->
                                 <div class="form-row">
-                                  <div class="col-md-6 mb-3">
+                                  <div class="col-md-4 mb-3">
                                         <label class="">Course</label>
                                         <select name="classes" class="form-control" required>
                                             {% for class in classes%}
@@ -29,11 +29,17 @@
                                         </select>
                                     
                                   </div>
-                                  <div class="col-md-6 mb-3">
+                                  <div class="col-md-4 mb-3">
                                         <label class="">Room</label>
                                         <select name="room" class="form-control" required>
                                             <option value="0" selected>0</option>
                                             
+                                        </select>
+                                  </div>
+                                  <div class="col-md-4 mb-3">
+                                        <label class="">Semester</label>
+                                        <select name="semesterPost" class="form-control" required>
+                                            <option selected  value="{{ values.semester}}">{{ values.semester }}</option>
                                         </select>
                                   </div>
                                 </div>

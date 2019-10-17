@@ -7,7 +7,8 @@ urlpatterns = [
     path('roomSearch',views.roomSearch, name='roomSearch'),
     path('timeSearch', views.timeSearch, name='timeSearch'),
     path('finalSchedule',views.finalSchedule, name='finalSchedule'),
-    path('webSchedule',views.webSchedule, name='webSchedule')
+    path('webSchedule',views.webSchedule, name='webSchedule'),
+    path('defaultSemester', views.defaultSemester, name='defaultSemester')
     
 
 

@@ -20,8 +20,8 @@
                                 {% csrf_token %}
                                 <!-- Form Row 1 -->
                                 <div class="form-row">
-                                  <div class="col-md-6 mb-3">
-                                        <label class="sr-only">Course</label>
+                                  <div class="col-md-4 mb-3">
+                                        <label class="">Course Name</label>
                                         <select name="classes" class="form-control" required>
                                             <option selected="False" disabled="disabled" value="course">Course</option>
                                             {% for class in classes %}
@@ -30,8 +30,8 @@
                                         </select>
                                     
                                   </div>
-                                  <div class="col-md-6 mb-3">
-                                        <label class="sr-only">Room</label>
+                                  <div class="col-md-4 mb-3">
+                                        <label class="">Room Number</label>
                                         <select name="room" class="form-control" required>
                                             <option selected="False" disabled="disabled" value="350">Room</option>
                                             {% for room in rooms %}
@@ -43,34 +43,53 @@
                                             {% endfor %}
                                         </select>
                                   </div>
+                                  <div class="col-md-4 mb-3">
+                                        <label class="">Semester</label>
+                                        <select name="semester" class="form-control" required>
+                                            <option selected="False" disabled="disabled" value="350">Semester</option>
+                                            {% for semester in semesters %}
+                                                {% if semester.default == True %}
+                                                    <option value="{{ semester }}" selected>{{ semester }} </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                  </div>
                                 </div>
-                                <div class="form-row">
-                                        <div class="col-md-9 mb-3">
-                                                <div class="">
-                                                      <label class="btn btn-default active">
-                                                          <input type="checkbox" autocomplete="off" name="days[]" value="M">
-                                                          monday
-                                                      </label>
-                                                      <label class="btn btn-default active">
-                                                          <input type="checkbox" autocomplete="off" name="days[]" value="T">
-                                                          Tuesday
-                                                      </label>
-                                                      <label class="btn btn-default active">
-                                                          <input type="checkbox" autocomplete="off" name="days[]" value="W">
-                                                          Wednesday
-                                                      </label>
-                                                      <label class="btn btn-default active">
-                                                          <input type="checkbox" autocomplete="off" name="days[]" value="H">
-                                                          Thursday
-                                                          </label>
-                                                      <label class="btn btn-default active">
-                                                          <input type="checkbox" autocomplete="off" name="days[]" value="F">
-                                                          Friday
-                                                      </label>
-                                                      
-                                                </div>
-                                              
-                                            </div>
+                            
+                                <div class="form-row">  
+                                    <div class="col-md-1 mb-3"></div>
+                                    <div class="col-md-2 mb-3">
+                                        <label class="btn btn-default btn-block active btnColor">
+                                            <input type="checkbox" autocomplete="off" name="days[]" value="M">
+                                            monday
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2 mb-3">
+                                        <label class="btn btn-default btn-block active btnColor">
+                                            <input type="checkbox" autocomplete="off" name="days[]" value="T">
+                                            Tuesday
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2 mb-3">
+                                        <label class="btn btn-default btn-block active btnColor">
+                                            <input type="checkbox" autocomplete="off" name="days[]" value="W">
+                                                Wednesday
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2 mb-3">
+                                        <label class="btn btn-default btn-block active btnColor">
+                                            <input type="checkbox" autocomplete="off" name="days[]" value="H">
+                                            Thursday
+                                            </label>
+                                    </div>
+                                    <div class="col-md-2 mb-3">
+                                        <label class="btn btn-default btn-block active btnColor">
+                                            <input type="checkbox" autocomplete="off" name="days[]" value="F">
+                                            Friday
+                                            </label>
+                                    </div>
+                                    <div class="col-md-1 mb-3"></div>        
+                                </div>
                                 </div>
                             <button class="btn btn-secondary btn-block mt-4" type="submit">Submit form</button>
                         </form>
@@ -94,35 +113,52 @@
                                 {% csrf_token %}
                                 <!-- Form Row 1 -->
                                 <div class="form-row">
-                                    <div class="col-md-1 mb-3">
-                                    </div>
-                                    <div class="col-md-9 mb-3 ml-5">
-                                            <label class="btn btn-default active">
-                                                    <input type="checkbox" autocomplete="off" name="days[]" value="M">
-                                                    monday
-                                                </label>
-                                                <label class="btn btn-default active">
-                                                    <input type="checkbox" autocomplete="off" name="days[]" value="T">
-                                                    Tuesday
-                                                </label>
-                                                <label class="btn btn-default active">
-                                                    <input type="checkbox" autocomplete="off" name="days[]" value="W">
-                                                    Wednesday
-                                                </label>
-                                                <label class="btn btn-default active">
-                                                    <input type="checkbox" autocomplete="off" name="days[]" value="H">
-                                                    Thursday
-                                                    </label>
-                                                <label class="btn btn-default active">
-                                                    <input type="checkbox" autocomplete="off" name="days[]" value="F">
-                                                    Friday
-                                                </label>
-                                    </div>
-                                    <div class="col-md-1 mb-3">
-
-                                    </div>
-
+                                    <div class="col-md-12 mb-3">
+                                        <label class="">Semester</label>
+                                        <select name="semester" class="form-control" required>
+                                            <option selected="False" disabled="disabled" value="350">Semester</option>
+                                            {% for semester in semesters %}
+                                                {% if semester.default == True %}
+                                                    <option value="{{ semester }}" selected>{{ semester }} </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                  </div>
                                 </div>
+                                <div class="form-row">  
+                                        <div class="col-md-1 mb-3"></div>
+                                        <div class="col-md-2 mb-3">
+                                            <label class="btn btn-default btn-block active btnColor">
+                                                <input type="checkbox" autocomplete="off" name="days[]" value="M">
+                                                monday
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2 mb-3">
+                                            <label class="btn btn-default btn-block active btnColor">
+                                                <input type="checkbox" autocomplete="off" name="days[]" value="T">
+                                                Tuesday
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2 mb-3">
+                                            <label class="btn btn-default btn-block active btnColor">
+                                                <input type="checkbox" autocomplete="off" name="days[]" value="W">
+                                                    Wednesday
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2 mb-3">
+                                            <label class="btn btn-default btn-block active btnColor">
+                                                <input type="checkbox" autocomplete="off" name="days[]" value="H">
+                                                Thursday
+                                                </label>
+                                        </div>
+                                        <div class="col-md-2 mb-3">
+                                            <label class="btn btn-default btn-block active btnColor">
+                                                <input type="checkbox" autocomplete="off" name="days[]" value="F">
+                                                Friday
+                                                </label>
+                                        </div>
+                                        <div class="col-md-1 mb-3"></div>        
+                                    </div>
                                 <div class="form-row">
                                     <div class="col-md-4 mb-3">
                                         <label class="">Start Time</label>
@@ -153,6 +189,7 @@
 
                                         </select>
                                     </div>
+                                    
     
                                 
                                 </div>
@@ -179,18 +216,29 @@
                                     {% csrf_token %}
                                     <!-- Form Row 1 -->
                                     <div class="form-row">
-                                      <div class="col-md-6 mb-3">
-                                            <label class="sr-only">Course</label>
+                                      <div class="col-md-4 mb-3">
+                                            <label class="">Course Name</label>
                                             <select name="classes" class="form-control" required>
                                                 {% for class in classes %}
                                                     <option value="{{ class.name }}">{{ class.name }}</option>
                                                 {% endfor %}
                                             </select>
                                       </div>
-                                      <div class="col-md-6 mb-3">
-                                            <label class="sr-only">Room</label>
+                                      <div class="col-md-4 mb-3">
+                                            <label class="">Room Number</label>
                                             <select name="room" class="form-control" required>
                                                 <option selected="True" name="room" value="0">WEB</option>
+                                            </select>
+                                      </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="">Semester</label>
+                                            <select name="semester" class="form-control" required>
+                                                <option selected="False" disabled="disabled" value="350">Semester</option>
+                                                {% for semester in semesters %}
+                                                    {% if semester.default == True %}
+                                                        <option value="{{ semester }}" selected>{{ semester }} </option>
+                                                    {% endif %}
+                                                {% endfor %}
                                             </select>
                                       </div>
                                     </div>

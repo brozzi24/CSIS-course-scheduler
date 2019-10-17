@@ -19,7 +19,7 @@
                                 {% csrf_token %}
                                 <!-- Form Row 1 -->
                                 <div class="form-row">
-                                  <div class="col-md-6 mb-3">
+                                  <div class="col-md-4 mb-3">
                                         <label class="sr-only">Course</label>
                                         <select name="classes" class="form-control" required>
                                             {% for class in classes %}
@@ -28,7 +28,7 @@
                                         </select>
                                     
                                   </div>
-                                  <div class="col-md-6 mb-3">
+                                  <div class="col-md-4 mb-3">
                                         <label class="sr-only">Room</label>
                                         <select name="room" class="form-control" required>
                                             {% for room in goodRooms %}
@@ -36,6 +36,16 @@
                                                     <option name="room_number" value="{{ room.room_number }}">{{ room.room_number}}LAB </option>
                                                 {% else %}
                                                     <option name="room_number" value="{{ room.room_number }}">{{ room.room_number}}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                  </div>
+                                  <div class="col-md-4 mb-3">
+                                        <label class="sr-only">Semester</label>
+                                        <select name="semesterPost" class="form-control" required>
+                                            {% for i in semesters %}
+                                                {% if i.semester == semester %}
+                                                    <option selected  value="{{ semester }}">{{ semester }}</option>
                                                 {% endif %}
                                             {% endfor %}
                                         </select>

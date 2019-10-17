@@ -48,8 +48,49 @@
 <div class="main-panel">
         <div class="content">
           <div class="container-fluid">
-           
-            
+              {% include 'partials/_alerts.html'%}
+            <div class="row">
+              <div class="col-md-6">
+                  <form action="{% url 'defaultSemester' %}" method="GET">
+                      {% csrf_token %}
+                      <!-- Form Row 1 -->
+                      <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                              <label class="">Change Semester</label>
+                              <select name="semester" class="form-control" required>
+                                {% for semester in semesters%}
+                                <option value="{{ semester.semester }}" 
+                                {% if semester.default == True %}
+                                  selected 
+                                {% endif %}
+                                >{{ semester.semester}}</option>
+                                
+                                {% endfor %}
+
+                              </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <button class="btn btn-secondary btn-block mt-4" type="submit">Change Default Semester</button>
+                        </div>
+                      </div>
+                  </form>
+              </div>
+              <div class="col-md-6">
+                  <form action="{% url 'defaultSemester' %}" method="POST">
+                      {% csrf_token %}
+                      <!-- Form Row 1 -->
+                      <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                              <label class="">Add Semester</label>
+                              <input type="text" name="addSemester" placeholder="Ex. Fall19" class="form-control" >
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <button class="btn btn-secondary btn-block mt-4" type="submit">Add Semester</button>
+                        </div>
+                      </div>
+                  </form>
+              </div>
+            </div>
             
             <div class="row">
               <div class="col-md-12">
@@ -98,61 +139,63 @@
                         </thead>
                         <tbody>
                           {% for i in schedule %}
-                          <tr>
-                            <td>{{i.course.grad_type}}</td>
-                            <td>{{i.flex}}</td>
-                            <td>{{i.course.subject}}</td>
-                            <td>{{i.crn}}</td>
-                            <td>{{i.course.course_number}}</td>
-                            <td>{{i.offering}}</td>
-                            <td>{{i.course.name}}</td>
-                            <td>{{i.course.min_hours}}.00</td>
-                            <td>{{i.course.max_hours}}.00</td>
-                            <td>{{i.course.fixed_hours}}.00</td>
-                            <td>{{i.name}}</td>
-                            <td>{{i.banner_id}}</td>
-                            <td>{{i.primary}}</td>
-                            <td>{{i.monday}}</td>
-                            <td>{{i.tuesday}}</td>
-                            <td>{{i.wednesday}}</td>
-                            <td>{{i.thursday}}</td>
-                            <td>{{i.friday}}</td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                              {% if i.delivery != 'WB' %}
-                                {{i.start_time}}
-                              {% endif %}
-                            </td>
-                            <td>
-                              {% if i.delivery != 'WB' %}
-                                {{i.end_time}}
-                              {% endif %}
-                            </td>
-                            <td>{{i.building}}</td>
-                            <td>
-                              {% if i.delivery != 'WB' %}
-                                {{i.room.room_number}}
-                              {% endif %}
-                            </td>
-                            <td>
-                              {% if i.delivery != 'WB' %}
-                                {{i.room.capcity}}
-                              {% else %}
-                                {{ i.capacity }}
-                              {% endif %}
-                              
-                            </td>
-                            <td>
-                              {% if i.course.special != 'N' %}
-                                Y
-                              {% endif %}
-                              
-                            </td>
-                            <td>{{i.campus}}</td>
-                            <td>{{i.delivery}}</td>
-                            <td>{{i.notes}}</td>
-                          </tr>
+                            {% if i.semester.default == True %}
+                              <tr>
+                                <td>{{i.course.grad_type}}</td>
+                                <td>{{i.flex}}</td>
+                                <td>{{i.course.subject}}</td>
+                                <td>{{i.crn}}</td>
+                                <td>{{i.course.course_number}}</td>
+                                <td>{{i.offering}}</td>
+                                <td>{{i.course.name}}</td>
+                                <td>{{i.course.min_hours}}.00</td>
+                                <td>{{i.course.max_hours}}.00</td>
+                                <td>{{i.course.fixed_hours}}.00</td>
+                                <td>{{i.name}}</td>
+                                <td>{{i.banner_id}}</td>
+                                <td>{{i.primary}}</td>
+                                <td>{{i.monday}}</td>
+                                <td>{{i.tuesday}}</td>
+                                <td>{{i.wednesday}}</td>
+                                <td>{{i.thursday}}</td>
+                                <td>{{i.friday}}</td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                  {% if i.delivery != 'WB' %}
+                                    {{i.start_time}}
+                                  {% endif %}
+                                </td>
+                                <td>
+                                  {% if i.delivery != 'WB' %}
+                                    {{i.end_time}}
+                                  {% endif %}
+                                </td>
+                                <td>{{i.building}}</td>
+                                <td>
+                                  {% if i.delivery != 'WB' %}
+                                    {{i.room.room_number}}
+                                  {% endif %}
+                                </td>
+                                <td>
+                                  {% if i.delivery != 'WB' %}
+                                    {{i.room.capcity}}
+                                  {% else %}
+                                    {{ i.capacity }}
+                                  {% endif %}
+                                  
+                                </td>
+                                <td>
+                                  {% if i.course.special != 'N' %}
+                                    Y
+                                  {% endif %}
+                                  
+                                </td>
+                                <td>{{i.campus}}</td>
+                                <td>{{i.delivery}}</td>
+                                <td>{{i.notes}}</td>
+                              </tr>
+                            {% endif %}
                           {% endfor %}
                         </tbody>
                       </table>
