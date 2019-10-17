@@ -16,7 +16,9 @@
                 <p class="card-category">Log in to be able to view and change schedule</p>
               </div>
               <div class="card-body">
-                <form action="#" method="POST">
+                {% include 'partials/_alerts.html'%}
+                <form action="{% url 'signin' %}" method="POST">
+                    {% csrf_token %}
                     <div class="form-group">
                         <label for="username">Username</label>
                         <input type="text" name="username" class="form-control" required>
