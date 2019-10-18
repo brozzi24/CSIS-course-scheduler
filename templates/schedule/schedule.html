@@ -8,6 +8,7 @@
           <div class="container-fluid">
             <!-- START FORM -->
             <div class="row">
+                {% include 'partials/_alerts.html'%}
                 <div class="col-md-12">
                     <div class="card">
                     <div class="card-header card-header-primary">
@@ -23,7 +24,6 @@
                                   <div class="col-md-4 mb-3">
                                         <label class="">Course Name</label>
                                         <select name="classes" class="form-control" required>
-                                            <option selected="False" disabled="disabled" value="course">Course</option>
                                             {% for class in classes %}
                                                 <option name="{{ class.name }}" value="{{ class.name }}">{{ class.name }}</option>
                                             {% endfor %}
@@ -33,7 +33,7 @@
                                   <div class="col-md-4 mb-3">
                                         <label class="">Room Number</label>
                                         <select name="room" class="form-control" required>
-                                            <option selected="False" disabled="disabled" value="350">Room</option>
+                                            
                                             {% for room in rooms %}
                                                 {% if room.room_type == "LAB" %}
                                                     <option name="{{ room.room_number }}" value="{{ room.room_number}}">{{ room.room_number}}LAB </option>

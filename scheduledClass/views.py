@@ -85,11 +85,15 @@ def index(request):
             getCourse = request.POST['classes']
             setCourse = Classes.objects.filter(name__iexact=getCourse)
             semester = request.POST['semesterPost'] 
+            schedule = Scheduled.objects.filter(semester__semester__iexact=semester)
+
             # get semester id 
             for i in semesters:
                 
                 if i.semester == semester:
                     semester_id = i.id
+
+                   
             # Turn room id to int
             getRoom = request.POST['room']
             room_id = int(getRoom)
@@ -103,8 +107,28 @@ def index(request):
             
             
             # For scheduled database
-            start_time = request.POST['start_time']
-            end_time = request.POST['end_time']
+            start_time = int(request.POST['start_time'])
+            end_time = int(request.POST['end_time'])
+            if start_time >= end_time:
+                messages.error(request,'The end time must be at least 30 min after the start time')
+                return redirect('schedule')
+            elif end_time - start_time < 30:
+                messages.error(request,'The end time must be at least 30 min after the start time')
+                return redirect('schedule')
+            for i in schedule:
+                print(i.room)
+                if i.end_time >= start_time and i.end_time <= end_time:
+                    messages.error(request,'Class with Name: {} is scheduled from {} to {}'.format(i.course.name,i.start_time,i.end_time))
+                    return redirect('schedule')
+                elif i.start_time >= start_time and i.end_time <= end_time:
+                    messages.error(request,'Class with Name: {} is scheduled from {} to {}'.format(i.course.name,i.start_time,i.end_time))
+                    return redirect('schedule')
+                elif i.start_time >= start_time and i.start_time <= end_time:
+                    messages.error(request,'Class with Name: {} is scheduled from {} to {}'.format(i.course.name,i.start_time,i.end_time))
+                    return redirect('schedule')
+                elif i.start_time <= start_time and i.end_time >= end_time:
+                    messages.error(request,'Class with Name: {} is scheduled from {} to {}'.format(i.course.name,i.start_time,i.end_time))
+                    return redirect('schedule') 
             if request.POST['flex']:
                 flex = request.POST['flex']
             else:
@@ -144,6 +168,7 @@ def index(request):
             # Scheduled object
             scheduled = Scheduled(course = setCourse[0], room=setRoom[0], semester_id = semester_id ,start_time=start_time, end_time=end_time,flex=flex,crn=crn,monday=monday,tuesday = tuesday, wednesday = wednesday, thursday = thursday, friday=friday,offering=offering,banner_id=banner_id,primary=primary,building=building,campus=campus,delivery=delivery,notes=notes,capacity=0)
             scheduled.save()
+            messages.success(request,'{} has been added to the {} semester'.format(getCourse,semester))
 
             return HttpResponseRedirect('/schedule/')
             
@@ -188,7 +213,10 @@ def roomSearch(request):
         2000,2010,2015,2025,2030,2045,2050,
         2100,2110,2115,2125,2130,2145,2150
     ]
-
+    #### VALIDATIONS ####
+    if len(days) == 0:
+        messages.error(request,'You must select at least ONE day!')
+        return redirect('schedule')
     # Get good and bad times
     goodTime = []
     badTime = []
@@ -222,6 +250,7 @@ def roomSearch(request):
             continue
         else:
             goodTime.append(i)
+    #### END VALIDATIONS ####
 
     context = {
         'rooms': rooms,
@@ -287,10 +316,20 @@ def timeSearch(request):
     end_time = int(request.GET.get('end_time'))
     room_type = request.GET.get('room_type')
     selected_semester = request.GET.get('semester')
-    
-    
 
-
+    #### VALADATIONS #####
+    # Check if days is empty
+    if len(days) == 0:
+        messages.error(request,'You must select at least ONE day')
+        return redirect('schedule')
+    # Check start and end time are valid
+    if start_time >= end_time:
+        messages.error(request,'The end time must be at least 30 minutes from the start time')
+        return redirect('schedule')
+    elif end_time - start_time < 30:
+        messages.error(request,'The end time must be at least 30 minutes from the start time')
+        return redirect('schedule')
+    
     # get days of the week selected by user
     selectedDays = []
     # Get scheduled class on selected days
@@ -324,6 +363,7 @@ def timeSearch(request):
     for room in rooms:
         if room not in badRooms and room.room_type == room_type.upper():
             goodRooms.append(room)
+    #### END VALADATIONS ####
 
 
     context = {
