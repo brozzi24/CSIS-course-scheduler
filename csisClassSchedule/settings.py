@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'rooms.apps.RoomsConfig',
     # 'scheduledClass.apps.ScheduledclassConfig',
     'django.contrib.sites',
-     'account',
+    
 
     
 
