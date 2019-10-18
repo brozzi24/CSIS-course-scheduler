@@ -15,12 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
-urlpatterns = [
-    path('',include('classes.urls')),
-    path('rooms/',include('rooms.urls')),
-    path('signin/',include('accounts.urls')),
-    path('schedule/', include('scheduledClass.urls')),
-    path('admin/', admin.site.urls),
-    
-]
+try:
+    urlpatterns = [
+        path('',include('classes.urls')),
+        path('rooms/',include('rooms.urls')),
+        path('signin/',include('accounts.urls')),
+        path('schedule/', include('scheduledClass.urls')),
+        path('admin/', admin.site.urls),
+        
+    ]
+except:
+    urlpatterns = []
