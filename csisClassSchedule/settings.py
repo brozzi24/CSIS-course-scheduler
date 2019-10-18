@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'classes.apps.ClassesConfig',
     'rooms.apps.RoomsConfig',
-    'scheduledClass.apps.ScheduledclassConfig',
+    # 'scheduledClass.apps.ScheduledclassConfig',
 
     
 
