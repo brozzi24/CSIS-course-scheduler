@@ -268,9 +268,14 @@ def finalSchedule(request):
         schedule = Scheduled.objects.all()
         rooms = Rooms.objects.all()
         semesters = Semester.objects.all()
+        defaultSemester = ''
+        for i in semesters:
+            if i.default == True:
+                defaultSemester = i.semester
         context = {
             'schedule': schedule,
-            'semesters': semesters
+            'semesters': semesters,
+            'defaultSemester': defaultSemester
         }
         return render(request, 'schedule/finalSchedules.html',context)
     else:
