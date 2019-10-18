@@ -7,6 +7,10 @@ from rooms.models import Rooms
 class Semester(models.Model):
     semester = models.CharField(max_length=20, unique=True)
     default = models.BooleanField(default=False)
+
+    class meta:
+        abstract = True
+        app_label = 'scheduledClass'
     def __str__(self):
         return self.semester
         
