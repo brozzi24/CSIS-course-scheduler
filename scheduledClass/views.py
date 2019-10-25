@@ -189,12 +189,19 @@ def roomSearch(request):
     # Database objects needed
     rooms = Rooms.objects.all()
     classes = Classes.objects.all()
-    semester = Semester.objects.all()
+    semesters = Semester.objects.all()
     # Form data need
     room_id = request.GET.get('room')
     days = request.GET.getlist('days[]')
     roomID = int(room_id)
+
+    # Find selected semester
+    selectedSemester = ''
+    for i in semesters:
+        if i.default == True:
+            selectedSemester = i.semester
     
+
     
     # Times
     time = [
@@ -221,6 +228,7 @@ def roomSearch(request):
     goodTime = []
     badTime = []
     selectedRoom = Scheduled.objects.filter(room__room_number=room_id)
+    selectedRoom = selectedRoom.filter(semester__semester=selectedSemester)
     selectedDays = []
     # Get selected days that are scheduled
     for day in days:
@@ -257,9 +265,10 @@ def roomSearch(request):
         'classes': classes,
         'values': request.GET,
         'roomID': roomID,
-        'time': goodTime,
+        'time': time,
+        'badTime': badTime,
         'days': days,
-        'semester': semester
+        'semester': semesters
     }
     return render(request, 'schedule/roomSchedule.html',context)
 
@@ -310,17 +319,17 @@ def defaultSemester(request):
 
 
 def timeSearch(request):
-    # Database objects needed
-    rooms = Rooms.objects.all()
-    classes = Classes.objects.all()
-    scheduled = Scheduled.objects.all()
-    semester = Semester.objects.all()
     # GET vars needed
     days = request.GET.getlist('days[]')
     start_time = int(request.GET.get('start_time'))
     end_time = int(request.GET.get('end_time'))
     room_type = request.GET.get('room_type')
     selected_semester = request.GET.get('semester')
+    # Database objects needed
+    rooms = Rooms.objects.all()
+    classes = Classes.objects.all()
+    scheduled = Scheduled.objects.filter(semester__semester=selected_semester)
+    semester = Semester.objects.all()
 
     #### VALADATIONS #####
     # Check if days is empty
@@ -334,9 +343,12 @@ def timeSearch(request):
     elif end_time - start_time < 30:
         messages.error(request,'The end time must be at least 30 minutes from the start time')
         return redirect('schedule')
+   
+    
     
     # get days of the week selected by user
     selectedDays = []
+    
     # Get scheduled class on selected days
     for day in days:
         if day == 'M':
@@ -350,6 +362,7 @@ def timeSearch(request):
         if day == 'F':
             selectedDays += scheduled.filter(friday__iexact='F')
 
+    
     # Check to see if each classroom is open at a selected time 
     badRooms = set()
     goodRooms = []

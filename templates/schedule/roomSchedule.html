@@ -128,18 +128,24 @@
                                     <div class="col-md-3 mb-3">
                                         <label> Start Time </label>
                                         <select name="start_time" class="form-control" required>
-                                            <option selected="False" disabled="disabled" value="">Start Time</option> 
                                             {% for t in time %}
-                                                <option value="{{ t }}">{{ t }} </option>
+                                                {% if t in badTime %}
+                                                    <option value="{{ t }}" disabled="disabled">{{ t }} </option>
+                                                {% else %}
+                                                    <option value="{{ t }}">{{ t }} </option>
+                                                {% endif %}
                                             {% endfor %}       
                                         </select>
                                     </div>
                                     <div class="col-md-3 mb-3">
                                         <label> End Time </label>
                                         <select name="end_time" class="form-control" required>
-                                            <option selected="False" disabled="disabled" value="">End Time</option>
                                             {% for t in time %}
-                                                <option value="{{ t }}">{{ t }} </option>
+                                                {% if t in badTime %}
+                                                    <option value="{{ t }}" disabled="disabled">{{ t }} </option>
+                                                {% else %}
+                                                    <option value="{{ t }}">{{ t }} </option>
+                                                {% endif %}
                                             {% endfor %}         
                                         </select>
                                     </div>
