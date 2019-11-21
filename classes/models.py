@@ -20,8 +20,8 @@ class Classes(models.Model):
         ('GRAD', 'Graduate'),
     )
 
-    name = models.CharField(max_length=100, unique=True)
-    course_number = models.IntegerField(unique=True)
+    name = models.CharField(max_length=100)
+    course_number = models.IntegerField()
     subject = models.CharField(max_length=20,choices=SUBJECTS)
     min_hours = models.IntegerField()
     max_hours = models.IntegerField()

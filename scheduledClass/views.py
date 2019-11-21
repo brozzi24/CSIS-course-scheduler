@@ -16,7 +16,7 @@ def index(request):
     if request.user.is_authenticated:
         form = roomForm()
         rooms = Rooms.objects.all()
-        classes = Classes.objects.all()
+        classes = Classes.objects.all().order_by('course_number')
         semesters = Semester.objects.all()
 
         
@@ -41,7 +41,7 @@ def index(request):
         if request.method == 'POST' and request.POST['room'] == '0':
             #get course and room
             for course in classes:
-                if course.name == request.POST['classes']:
+                if course.id == int(request.POST['classes']):
                     getCourse = course
             for room in rooms:
                 if room.room_number == int(request.POST['room']):
@@ -77,13 +77,14 @@ def index(request):
             # create Scheduled object and save it
             scheduled = Scheduled(course = getCourse, room=getRoom, semester_id = semester_id,start_time=0, end_time=0,flex=flex,crn=crn,monday='',tuesday = '', wednesday = '', thursday = '', friday='',offering=offering,banner_id=banner_id,primary=primary,building=building,campus=campus,delivery=delivery,notes=notes,capacity=capacity)
             scheduled.save()
+            messages.success(request,'{} {} {} was scheduled!'.format(getCourse.course_number,getCourse.subject,getCourse.name))
             return HttpResponseRedirect('/schedule/')
 
             # Schedule course
         elif request.method == 'POST':
             # Get course and Room and semester 
-            getCourse = request.POST['classes']
-            setCourse = Classes.objects.filter(name__iexact=getCourse)
+            getCourse = int(request.POST['classes'])
+            setCourse = Classes.objects.filter(id=getCourse)
             semester = request.POST['semesterPost'] 
             schedule = Scheduled.objects.filter(semester__semester__iexact=semester)
 
@@ -188,9 +189,10 @@ def index(request):
 def roomSearch(request):
     # Database objects needed
     rooms = Rooms.objects.all()
-    classes = Classes.objects.all()
+    classes = Classes.objects.all().order_by('course_number')
     semesters = Semester.objects.all()
     # Form data need
+    class_id = int(request.GET.get('classes'))
     room_id = request.GET.get('room')
     days = request.GET.getlist('days[]')
     roomID = int(room_id)
@@ -263,6 +265,7 @@ def roomSearch(request):
     context = {
         'rooms': rooms,
         'classes': classes,
+        'class_id': class_id,
         'values': request.GET,
         'roomID': roomID,
         'time': time,
@@ -399,12 +402,14 @@ def timeSearch(request):
 
 def webSchedule(request):
     # Get user form information
-    classes = Classes.objects.all()
+    classes = Classes.objects.all().order_by('course_number')
+    class_id = int(request.GET.get('classes'))
     
     web = 'WEB'
 
     context = {
         'classes': classes,
+        'class_id': class_id,
         'values': request.GET,
     }
     return render(request,'schedule/webSchedule.html',context)

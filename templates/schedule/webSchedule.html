@@ -22,8 +22,8 @@
                                         <label class="">Course</label>
                                         <select name="classes" class="form-control" required>
                                             {% for class in classes%}
-                                                {% if class.name == values.classes %}
-                                                    <option name="class_name" value="{{ class.name }}" selected >{{ class.name }} </option>
+                                                {% if class.id == class_id %}
+                                                    <option name="class_name" value="{{ class.id }}" selected >{{class.course_number}} {{class.subject}} {{ class.name }} </option>
                                                 {% endif %}
                                             {% endfor %}
                                         </select>

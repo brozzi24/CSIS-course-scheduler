@@ -23,7 +23,7 @@
                                         <label class="sr-only">Course</label>
                                         <select name="classes" class="form-control" required>
                                             {% for class in classes %}
-                                                <option name="class_name" value="{{ class.name }}" selected >{{ class.name }} </option>
+                                                <option name="class_name" value="{{ class.id }}" selected >{{class.course_number }} {{class.subject}} {{ class.name }} </option>
                                             {% endfor %}
                                         </select>
                                     

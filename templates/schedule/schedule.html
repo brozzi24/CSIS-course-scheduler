@@ -25,7 +25,7 @@
                                         <label class="">Course Name</label>
                                         <select name="classes" class="form-control" required>
                                             {% for class in classes %}
-                                                <option name="{{ class.name }}" value="{{ class.name }}">{{ class.name }}</option>
+                                                <option name="{{ class.name }}" value="{{ class.id }}">{{class.course_number}} {{class.subject}}  {{ class.name }}</option>
                                             {% endfor %}
                                         </select>
                                     
@@ -220,7 +220,7 @@
                                             <label class="">Course Name</label>
                                             <select name="classes" class="form-control" required>
                                                 {% for class in classes %}
-                                                    <option value="{{ class.name }}">{{ class.name }}</option>
+                                                    <option value="{{ class.id }}">{{class.course_number}} {{class.subject}} {{ class.name }}</option>
                                                 {% endfor %}
                                             </select>
                                       </div>

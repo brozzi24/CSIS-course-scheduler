@@ -69,7 +69,6 @@
                 <div class="table-responsive scrollable">
                   <table id="keywords" class="table">
                     <thead class=" text-primary">
-                      <th>ID</th>
                       <th id="courseNumber">Course #</th>
                       <th>Name</th>
                       <th id="subject">Subject</th>
@@ -82,7 +81,6 @@
                       {% if classes %}
                         {% for class in classes %}
                         <tr>
-                            <td>{{ class.id}}</td>
                             <td>{{ class.course_number }}</td>
                             <td>{{ class.name }}</td>
                             <td>{{ class.subject}}</td>
