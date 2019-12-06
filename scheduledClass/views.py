@@ -117,18 +117,20 @@ def index(request):
                 messages.error(request,'The end time must be at least 30 min after the start time')
                 return redirect('schedule')
             for i in schedule:
-                if i.end_time >= start_time and i.end_time <= end_time and i.room_id == room_id:
-                    messages.error(request,'Class with Name: {} is scheduled from {} to {}'.format(i.course.name,i.start_time,i.end_time))
-                    return redirect('schedule')
-                elif i.start_time >= start_time and i.end_time <= end_time and i.room_id == room_id:
-                    messages.error(request,'Class with Name: {} is scheduled from {} to {}'.format(i.course.name,i.start_time,i.end_time))
-                    return redirect('schedule')
-                elif i.start_time >= start_time and i.start_time <= end_time and i.room_id == room_id:
-                    messages.error(request,'Class with Name: {} is scheduled from {} to {}'.format(i.course.name,i.start_time,i.end_time))
-                    return redirect('schedule')
-                elif i.start_time <= start_time and i.end_time >= end_time and i.room_id == room_id:
-                    messages.error(request,'Class with Name: {} is scheduled from {} to {}'.format(i.course.name,i.start_time,i.end_time))
-                    return redirect('schedule') 
+                if room_id == i.room.room_number:
+                    
+                    if i.end_time >= start_time and i.end_time <= end_time:
+                        messages.error(request,'Class with Name: {} is scheduled from {} to {}'.format(i.course.name,i.start_time,i.end_time))
+                        return redirect('schedule')
+                    elif i.start_time >= start_time and i.end_time <= end_time:
+                        messages.error(request,'Class with Name: {} is scheduled from {} to {}'.format(i.course.name,i.start_time,i.end_time))
+                        return redirect('schedule')
+                    elif i.start_time >= start_time and i.start_time <= end_time:
+                        messages.error(request,'Class with Name: {} is scheduled from {} to {}'.format(i.course.name,i.start_time,i.end_time))
+                        return redirect('schedule')
+                    elif i.start_time <= start_time and i.end_time >= end_time:
+                        messages.error(request,'Class with Name: {} is scheduled from {} to {}'.format(i.course.name,i.start_time,i.end_time))
+                        return redirect('schedule') 
             if request.POST['flex']:
                 flex = request.POST['flex']
             else:
@@ -381,8 +383,12 @@ def timeSearch(request):
         
     # add open rooms to goodRooms list
     for room in rooms:
-        if room not in badRooms and room.room_type == room_type.upper():
-            goodRooms.append(room)
+        if room_type == 'both':
+            if room not in badRooms:
+                goodRooms.append(room)
+        else:
+            if room not in badRooms and room.room_type == room_type.upper():
+                goodRooms.append(room)
     #### END VALADATIONS ####
 
 

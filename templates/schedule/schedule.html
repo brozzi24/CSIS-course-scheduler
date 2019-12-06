@@ -35,10 +35,12 @@
                                         <select name="room" class="form-control" required>
                                             
                                             {% for room in rooms %}
-                                                {% if room.room_type == "LAB" %}
-                                                    <option name="{{ room.room_number }}" value="{{ room.room_number}}">{{ room.room_number}}LAB </option>
-                                                {% else %}
-                                                    <option name="{{ room.room_number }}" value="{{ room.room_number}}">{{ room.room_number}} </option>
+                                                {% if room.room_number != 0 %}
+                                                    {% if room.room_type == "LAB" %}
+                                                        <option name="{{ room.room_number }}" value="{{ room.room_number}}">{{ room.room_number}}LAB </option>
+                                                    {% else %}
+                                                        <option name="{{ room.room_number }}" value="{{ room.room_number}}">{{ room.room_number}} </option>
+                                                    {% endif %}
                                                 {% endif %}
                                             {% endfor %}
                                         </select>

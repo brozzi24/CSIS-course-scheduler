@@ -32,10 +32,12 @@
                                         <label class="sr-only">Room</label>
                                         <select name="room" class="form-control" required>
                                             {% for room in goodRooms %}
-                                                {% if room.room_type == "LAB" %}
-                                                    <option name="room_number" value="{{ room.room_number }}">{{ room.room_number}}LAB </option>
-                                                {% else %}
-                                                    <option name="room_number" value="{{ room.room_number }}">{{ room.room_number}}</option>
+                                                {% if room.room_number != 0 %}
+                                                    {% if room.room_type == "LAB" %}
+                                                        <option name="room_number" value="{{ room.room_number }}">{{ room.room_number}}LAB </option>
+                                                    {% else %}
+                                                        <option name="room_number" value="{{ room.room_number }}">{{ room.room_number}}</option>
+                                                    {% endif %}
                                                 {% endif %}
                                             {% endfor %}
                                         </select>
@@ -171,7 +173,7 @@
                                         <input type="text" name="campus" placeholder="Campus(M)" class="form-control" >
                                     </div>
                                     <div class="col-md-3 mb-3">
-                                        <input type="text" name="delivery" placeholder="Dilivery(TR)" class="form-control" >
+                                        <input type="text" name="delivery" placeholder="Delivery(TR)" class="form-control" >
                                     </div>
                                     <div class="col-md-3 mb-3">
                                         <input type="text" name="notes" placeholder="Notes(None)" class="form-control" >
